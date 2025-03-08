@@ -1,2 +1,2 @@
-# LOL-ESPORTS_WL_Classification
+# LOL-Esports W/L Classification
 UCSD DSC80 Project
