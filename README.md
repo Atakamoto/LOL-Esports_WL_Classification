@@ -1,5 +1,6 @@
 # League of Legends Win/Loss Classification
 
+<<<<<<< HEAD
 UCSD DSC80 Project
 
 Author: Alexander Takamoto
@@ -243,3 +244,4 @@ There are still many columns that will not be used for the model but that will b
   height="600"
   frameborder="0"
 ></iframe>
+
