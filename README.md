@@ -1,6 +1,5 @@
 # League of Legends Win/Loss Classification
 
-<<<<<<< HEAD
 UCSD DSC80 Project
 
 Author: Alexander Takamoto
@@ -245,3 +244,24 @@ There are still many columns that will not be used for the model but that will b
   frameborder="0"
 ></iframe>
 
+This distribution appears to be approximately normal and centered roughly around 0 which would mean that the teams are even in gold at 10 minutes. This makes sense and since there is no or very little skew, it means there is a balance of teams with gold leads or teams behind in gold at 10 minutes. 
+
+<iframe
+  src="assets/TeamKillsHist.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+This distribution is skewed to the right which makes since since it is not possible to have negative team kills. Based on the histogram it appears that the majority of the games have between 0 and 4 kills with anything above 8 being an outlier.
+
+### Bivariate Analysis
+
+<iframe
+  src="assets/PosCSPie.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+This pie chart shows the results of games when you have a positive CS difference at 10 minutes. Given that about 65% of the time teams win when we there is a positive CS difference at 10 minutes we can get a general idea of how important columns like `csat10` or `csat15` are.
