@@ -265,3 +265,159 @@ This distribution is skewed to the right which makes since since it is not possi
 ></iframe>
 
 This pie chart shows the results of games when you have a positive CS difference at 10 minutes. Given that about 65% of the time teams win when we there is a positive CS difference at 10 minutes we can get a general idea of how important columns like `csat10` or `csat15` are.
+
+### Interesting Aggregates
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>golddiffat10_mid</th>
+      <th>golddiffat15_mid</th>
+      <th>golddiffat20_mid</th>
+      <th>xpdiffat10_mid</th>
+      <th>xpdiffat15_mid</th>
+      <th>xpdiffat20_mid</th>
+      <th>killsdiffat10_mid</th>
+      <th>killsdiffat15_mid</th>
+      <th>killsdiffat20_mid</th>
+    </tr>
+    <tr>
+      <th>result</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-132.325069</td>
+      <td>-332.630460</td>
+      <td>-603.252170</td>
+      <td>-85.591303</td>
+      <td>-222.370917</td>
+      <td>-454.404893</td>
+      <td>-0.165683</td>
+      <td>-0.382723</td>
+      <td>-0.730268</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>139.121636</td>
+      <td>375.036957</td>
+      <td>667.332613</td>
+      <td>74.294761</td>
+      <td>217.180301</td>
+      <td>416.643784</td>
+      <td>0.184966</td>
+      <td>0.414424</td>
+      <td>0.750270</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+By grouping by result and looking at the midlane columns, we can see the average stats for midlaners who win and loss the game. This gives a general idea of where we would expect the midlaners stat line to be around at different points in the game if their team were to win or lose the game.
+
+## Assessment of Missingness
+## NMAR Analysis
+
+When looking at the general dataset before the cleaning, the column `playername` may be Not Missing At Random (NMAR), because players whose names that are more well known may be less likely to be missing. In order to make a column like this Missing at Random (MAR) a column like the number of games the player was a part of may be helpful or a column if the player was a substitute or something along those lines.
+
+## Missingness Dependency
+
+Even after removing the rows from the games played in China and cleaning the dataset, there are still some missing values in the stats for the different minute timestamps. In this section I will test whether the column `killsat25` depends `poscsdiffat10` or `league`. For both tests the significance level will be 0.05 and the test testistic will be total variation distance (TVD).
+
+First I perform a permutation test about the missingness of `killsat25` depending on `league`.
+
+Null Hypothesis: The distribution of `league` when `killsat25` isn't missing is the same as the distribution of `league` when `killsat25` is missing.
+
+Alternative Hypothesis: The distribution of `league` when `killsat25` isn't missing is the NOT the same as the distribution of `league` when `killsat25` is missing.
+
+This is the observed distribution of `league` when `killsat25` is missing and not missing.
+
+<iframe
+  src="assets/LeagueDist.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+Here is a histogram of the results of the permutation test.
+
+<iframe
+  src="assets/LeagueTVD.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+After running the permutation test, the p-value of the observed test statistic was 0.0. Since the p-value of 0.00 is less than the 0.05 signicance level, we reject the null hypothesis and it is likely that the missingness of `killsat25` depends on `league`.
+
+The next permutation test is about the missingness of `killsat25` depending on `poscsdiffat10`.
+
+Null Hypothesis: The distribution of `poscsdiffat10` when `killsat25` isn't missing is the same as the distribution of `poscsdiffat10` when `killsat25` is missing.
+
+Alternative Hypothesis: The distribution of `poscsdiffat10` when `killsat25` isn't missing is the NOT the same as the distribution of `poscsdiffat10` when `killsat25` is missing.
+
+This is the observed distribution of `poscsdiffat10` when `killsat25` is missing and not missing.
+
+<iframe
+  src="assets/CSDist.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+Here is a histogram of the results of the permutation test.
+
+<iframe
+  src="assets/CSTVD.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+After running the permutation test, the p-value of the observed test statistic was 0.16. Since the p-value of 0.16 is greater than the 0.05 signicance level, we fail to reject the null hypothesis and it is not likely that the missingness of `killsat25` depends on `poscsdiffat10`.
+
+## Hypothesis Testing
+
+In this section, I will determine if there is a significant difference in the distributions of gold difference at 15 minutes. This will allow us to gauge how team differences like gold vary across winning and losing teams and if that difference is significant. I will be performing a permutation test at a 0.05 significance level using absolute mean difference as a test statistic.
+
+Null Hypothesis: The distribution of gold differences at 15 minutes for the winning team is the same as the distribution for the losing team.
+
+Alternative Hypothesis: The distribution of gold differences at 15 minutes for the winning team is NOT the same as the distribution for the losing team.
+
+Here is a histogram of the results of the permutation test.
+
+<iframe
+  src="assets/GoldTVD.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+After running the permutation test, the p-value of the observed test statistic was 0.00. Since the p-value of 0.00 is less than the 0.05 signicance level, we  reject the null hypothesis and it is likely that the distribution of gold differences at 15 minutes for the winning team is different from the distribution for the losing team.
+
+## Framing a Prediction Problem
