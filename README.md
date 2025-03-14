@@ -1,7 +1,5 @@
 # League of Legends Win/Loss Classification
 
-UCSD DSC80 Project
-
 Author: Alexander Takamoto
 
 ## Introducton
@@ -421,3 +419,31 @@ Here is a histogram of the results of the permutation test.
 After running the permutation test, the p-value of the observed test statistic was 0.00. Since the p-value of 0.00 is less than the 0.05 signicance level, we  reject the null hypothesis and it is likely that the distribution of gold differences at 15 minutes for the winning team is different from the distribution for the losing team.
 
 ## Framing a Prediction Problem
+
+The goal of the model is to determine whether a team will win or lose a professional League of Legends game only based on game data available at 15 minutes. Thus this model will not use information from later points like `killsat25` or general game information that you would only know after the game like the general column `assists`. It will also not use information about the specific teams or players involved. This is a binary classification problem with the response variable being `result` which is either a 1 if the team won or 0 if the team lost.
+
+In this model I am choosing to focus on accuracy as the primary metric to evaluate the model. There is no inherent reason to prioritize false positives(incorrectly predicting a win) or false negatives(incorrectly predicting a loss). Also to note, when I looked at the classification report the precision and recall scores were similar for both classes, meaning that it doesn't not appear that the model disproportionately favors one class over the other.
+
+## Baseline Model
+
+For the baseline model, I used a Random Forest Classifier with three features. These features were `killsdiffat15`, `assistsdiffat15`, and `deathsdiffat15`. These features are all quantitative and thus don't need encoding. 
+
+After fitting the model, the accuracy score was 0.6899. While this accuracy is decent, looking back at the bivariate analysis, 65.4% of teams that have a `poscsdiffat10` win the game. Given that just based on this one feature earlier in the game, around 65% of teams win, I hope to improve this accuracy by adding more features and adjusting hyperparameters.
+
+## Final Model
+
+In the final model, I added 8 more features. `csdiffat15` and `xpdiffat15` provide more information about how the laning phase (early game) is going for the team as a whole. The xp and cs columns generally show if team members are winning lanes. The other 6 columns are the general `golddiffat15` along with the role specific gold values: `golddiffat15_top`, `golddiffat15_jng`, `golddiffat15_mid`, `golddiffat15_bot`, and `golddiffat15_sup`. This is to give a general idea of how each lane is doing since some lanes may provide more importance than others. For example, a Support having a good game may not have as much importance as a Jungler or Mid Laner. Therefore while, general differences are important, it is also useful to give a general idea of how each lane is doing.
+
+In addition to this I used GridSearchCV and ended up with the hyperparameters: max_depth = 5 and n_estimators = 200.
+
+After these adjustments and additions, the accuracy score is now 0.7532. This is a nice improvement from the baseline model and suggests that adding these additional roles specific and laning features helped to model better differentiate between winning and losing teams.
+
+## Fairness Analysis
+
+Now I will look at two different groups as determine if the model is fair among the two groups. To do this group X will be teams who have a gold lead at 15 minutes while group Y will be teams who are behind in gold at 15 minutes. I will be using difference in accuracy as the test statistic at a 0.05 significance level.
+
+Null Hypothesis: The accuracy for teams with a gold lead at 15 minutes is the same for teams behind in gold at 15 minutes.
+
+Alternative Hypothesis: The accuracy for teams with a gold lead at 15 minutes is NOT the same for teams behind in gold at 15 minutes.
+
+After performing the test, the p-value was 0.576. Since the p-value is greater thn 0.05, we fail to reject the null hypothesis and thus it seems that our model predicts results from each of the two groups at a similar accuracy.
