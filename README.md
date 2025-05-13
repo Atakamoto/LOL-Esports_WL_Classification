@@ -5,7 +5,7 @@ Author: Alexander Takamoto
 ## Introducton
 ### General Introduction
 
-League of Legends is a 5v5 Multiplayer Online Battler Arena game by Riot Games. It is one of the most popular esports in the world with a very large fanbase and thousands of professional matches being played each year. In addition to the esports side, millions of people play League of Legends casually or for a rank and it is one of the biggest online games in general. 
+League of Legends is a 5v5 Multiplayer Online Battler Arena game by Riot Games. It is one of the most popular esports in the world with a very large fanbase and thousands of professional matches being played each year. In addition to the esports side, millions of people play League of Legends casually or for a rank and it is one of the biggest online multiplayer games in general. 
 
 One of the common areas of discussion in ranked play whether forfeiting is the best option or if it's still possible to win the game at a certain point. The earliest possible point to forfeit the game is at 15 minutes and this leads to the term **"ff15"** being used. Within games it is widely debated if you should play out games even if you are losing. People either feel that you should forfeit to save people's time or you should play it out because you could comeback. This project investigates this question at the professional level.
 
